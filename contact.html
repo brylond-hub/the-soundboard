@@ -1,1 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Music &amp; Contact | The Soundboard</title>
+  <meta name="description" content="Submit an independent music pitch, interview request, or reader message to The Soundboard editorial team.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand-link" href="index.html">
+        <img class="brand-logo" src="images/soundboard-logo.png" alt="The Soundboard independent music magazine logo">
+        <span>The Soundboard</span>
+      </a>
+      <nav class="site-nav" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="interviews.html">Interviews</a>
+        <a href="releases.html">Releases</a>
+        <a href="contact.html" aria-current="page">Submit &amp; Contact</a>
+      </nav>
+    </div>
+  </header>
 
+  <main class="container">
+    <h1>Submit Music &amp; Contact The Soundboard</h1>
+    <p>Use the form below to send a music pitch, suggest an artist interview, or share feedback with our editors.</p>
+
+    <div class="cta-box">
+      <h2>Editorial Submission Guidelines</h2>
+      <p>Include your artist or project name, release details, and a clear note so our team can review your message.</p>
+      <a class="btn" href="releases.html">Check Upcoming Releases</a>
+    </div>
+
+    <section aria-labelledby="contact-form-heading">
+      <h2 id="contact-form-heading">Submission &amp; Contact Form</h2>
+      <form id="soundboardForm" novalidate>
+        <div class="form-group">
+          <label for="senderName">Your Name *</label>
+          <input type="text" id="senderName" name="senderName" required>
+          <span class="error-msg" id="nameError" aria-live="polite"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="senderEmail">Email Address *</label>
+          <input type="email" id="senderEmail" name="senderEmail" required>
+          <span class="error-msg" id="emailError" aria-live="polite"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="topicSelect">Submission Topic *</label>
+          <select id="topicSelect" name="topicSelect" required>
+            <option value="">-- Choose a topic --</option>
+            <option value="album-review">Album or Single Review Pitch</option>
+            <option value="artist-interview">Artist Interview Request</option>
+            <option value="release-calendar">Upcoming Release Listing</option>
+            <option value="reader-note">Reader Feedback</option>
+          </select>
+          <span class="error-msg" id="topicError" aria-live="polite"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="messageBox">Message or Release Details *</label>
+          <textarea id="messageBox" name="messageBox" rows="4" required></textarea>
+          <span class="error-msg" id="messageError" aria-live="polite"></span>
+        </div>
+
+        <button type="submit" class="btn">Send Submission</button>
+        <div id="formSuccess" class="success-banner" role="status" aria-live="polite" hidden></div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <h2>Music &amp; Web Resources</h2>
+      <ul>
+        <li><a href="https://bandcamp.com/" target="_blank" rel="noopener noreferrer">Bandcamp Independent Music Store</a></li>
+        <li><a href="https://musicbrainz.org/" target="_blank" rel="noopener noreferrer">MusicBrainz Open Music Database</a></li>
+        <li><a href="https://validator.w3.org/" target="_blank" rel="noopener noreferrer">W3C HTML Validation Service</a></li>
+      </ul>
+      <p>The Soundboard Independent Music Magazine — <a href="index.html">Back to Home</a></p>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById("soundboardForm");
+    const nameInput = document.getElementById("senderName");
+    const emailInput = document.getElementById("senderEmail");
+    const topicInput = document.getElementById("topicSelect");
+    const messageInput = document.getElementById("messageBox");
+
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("emailError");
+    const topicError = document.getElementById("topicError");
+    const messageError = document.getElementById("messageError");
+    const successBanner = document.getElementById("formSuccess");
+
+    function validateForm() {
+      let valid = true;
+
+      if (nameInput.value.trim().length < 2) {
+        nameError.textContent = "Please enter your name (at least 2 characters).";
+        valid = false;
+      } else {
+        nameError.textContent = "";
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(emailInput.value.trim())) {
+        emailError.textContent = "Please enter a valid email address (for example, name@example.com).";
+        valid = false;
+      } else {
+        emailError.textContent = "";
+      }
+
+      if (topicInput.value === "") {
+        topicError.textContent = "Please select a submission topic before submitting.";
+        valid = false;
+      } else {
+        topicError.textContent = "";
+      }
+
+      if (messageInput.value.trim().length < 10) {
+        messageError.textContent = "Please enter at least 10 characters in your message.";
+        valid = false;
+      } else {
+        messageError.textContent = "";
+      }
+
+      return valid;
+    }
+
+    [nameInput, emailInput, topicInput, messageInput].forEach((field) => {
+      field.addEventListener("input", validateForm);
+      field.addEventListener("blur", validateForm);
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      successBanner.hidden = true;
+
+      if (validateForm()) {
+        successBanner.textContent =
+          "Thanks, " +
+          nameInput.value.trim() +
+          "! Your submission has been received for review by The Soundboard.";
+        successBanner.hidden = false;
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
